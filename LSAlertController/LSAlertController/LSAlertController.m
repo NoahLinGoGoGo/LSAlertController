@@ -14,10 +14,9 @@
 #define screenW  [UIScreen mainScreen].bounds.size.width
 #define screenH  [UIScreen mainScreen].bounds.size.height
 
-static CGFloat containerW = 300.0;
-static CGFloat containerH = 160.0;
 static CGFloat margin = 15.0;
 static CGFloat messageTitleH = 30.0;
+static CGFloat containerH = 160.0;
 
 
 @implementation LSAlertAction
@@ -57,6 +56,7 @@ static CGFloat messageTitleH = 30.0;
 
 @implementation LSAlertController
 @synthesize title = _title;
+
 
 #pragma mark - Life Cycle
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(LSAlertControllerStyle)preferredStyle {
@@ -106,6 +106,7 @@ static CGFloat messageTitleH = 30.0;
 }
 
 - (void)setupActionSheetStyleSubViews {
+    NSLog(@"%f",self.containerW);
     NSUInteger actionLength = self.actionItems.count;
     CGFloat buttonH = 50.0;
     containerH += actionLength * buttonH;
@@ -114,13 +115,13 @@ static CGFloat messageTitleH = 30.0;
         containerH += buttonH;
     }
     
-    self.containerView.frame = CGRectMake((screenW - containerW)* 0.5, screenH - containerH, containerW, containerH);
+    self.containerView.frame = CGRectMake((screenW - _containerW)* 0.5, screenH - containerH, _containerW, containerH);
     
     if (![self isEmptyString:self.title] && ![self isEmptyString:self.message]) {
-        self.titleLabel.frame = CGRectMake(margin, 0, containerW - 2 * margin, buttonH * 0.5);
-        self.messageLabel.frame = CGRectMake(margin, buttonH * 0.5, containerW - 2 * margin, buttonH * 0.5);
+        self.titleLabel.frame = CGRectMake(margin, 0, _containerW - 2 * margin, buttonH * 0.5);
+        self.messageLabel.frame = CGRectMake(margin, buttonH * 0.5, _containerW - 2 * margin, buttonH * 0.5);
     } else {
-        self.titleLabel.frame = CGRectMake(margin, 0, containerW - 2 * margin, buttonH);
+        self.titleLabel.frame = CGRectMake(margin, 0, _containerW - 2 * margin, buttonH);
         self.messageLabel.frame = self.titleLabel.frame;
     }
     
@@ -129,14 +130,14 @@ static CGFloat messageTitleH = 30.0;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitle:action.title forState:UIControlStateNormal];
         [button setTitleColor:action.textColor forState:UIControlStateNormal];
-        [button setFrame:CGRectMake(0, containerH - (actionLength - i) * buttonH , containerW, buttonH)];
+        [button setFrame:CGRectMake(0, containerH - (actionLength - i) * buttonH , _containerW, buttonH)];
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         button.layer.borderColor = RGB(228, 228, 228, 1).CGColor;
         button.layer.borderWidth = 0.5;
         button.tag = 100 + i;
         if (i == actionLength - 1) {
             [button addTopBorderWithColor:RGB(102, 102, 102, 0.2) andWidth:5.0];
-            [button setFrame:CGRectMake(0, containerH - (actionLength - i) * buttonH , containerW, buttonH + 5)];
+            [button setFrame:CGRectMake(0, containerH - (actionLength - i) * buttonH , _containerW, buttonH + 5)];
         }
         [self.containerView addSubview:button];
     }
@@ -149,19 +150,19 @@ static CGFloat messageTitleH = 30.0;
 - (void)setupAlertStyleSubViews {
     NSUInteger actionLength = self.actionItems.count;
     NSUInteger textFieldLength = self.textFieldItems.count;
-    CGFloat textFieldW = containerW - margin * 2;
+    CGFloat textFieldW = _containerW - margin * 2;
     CGFloat textFieldH = 40.0;
     CGFloat buttonH = 50.0;
     CGFloat buttonW;
     if (actionLength > 2) {
-        buttonW = containerW;
+        buttonW = _containerW;
         containerH += actionLength * buttonH - buttonH;
     } else {
-        buttonW = containerW / actionLength;
+        buttonW = _containerW / actionLength;
     }
     
     containerH += textFieldLength * textFieldH;
-    messageTitleH = [self.message boundingRectWithSize:CGSizeMake(containerW - 2 * margin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil].size.height;
+    messageTitleH = [self.message boundingRectWithSize:CGSizeMake(_containerW - 2 * margin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil].size.height;
     if (messageTitleH < margin *2) {
         messageTitleH = margin *2;
 
@@ -173,16 +174,16 @@ static CGFloat messageTitleH = 30.0;
     }
     
     
-    self.containerView.frame = CGRectMake((screenW - containerW)* 0.5, (screenH - containerH)* 0.5, containerW, containerH);
+    self.containerView.frame = CGRectMake((screenW - _containerW)* 0.5, (screenH - containerH)* 0.5, _containerW, containerH);
     
     
     
     if (![self isEmptyString:self.title] && ![self isEmptyString:self.message]) {
-        self.titleLabel.frame = CGRectMake(margin, margin, containerW - 2 * margin, margin * 2);
-        self.messageLabel.frame = CGRectMake(margin, margin * 3, containerW - 2 * margin, messageTitleH);
+        self.titleLabel.frame = CGRectMake(margin, margin, _containerW - 2 * margin, margin * 2);
+        self.messageLabel.frame = CGRectMake(margin, margin * 3, _containerW - 2 * margin, messageTitleH);
     } else {
-        self.titleLabel.frame = CGRectMake(margin, margin * 3.5, containerW - 2 * margin, margin * 2);
-        self.messageLabel.frame = CGRectMake(margin, margin * 3.5, containerW - 2 * margin, messageTitleH);
+        self.titleLabel.frame = CGRectMake(margin, margin * 3.5, _containerW - 2 * margin, margin * 2);
+        self.messageLabel.frame = CGRectMake(margin, margin * 3.5, _containerW - 2 * margin, messageTitleH);
     }
     
     
@@ -242,13 +243,20 @@ static CGFloat messageTitleH = 30.0;
 }
 
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self dismiss];
-}
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//    [self dismiss];
+//}
 
 
 
 #pragma mark - setter & getter
+-(void)setContainerW:(CGFloat)containerW {
+    _containerW = containerW;
+    CGFloat containerX = self.containerView.frame.origin.x;
+    CGFloat containerY = self.containerView.frame.origin.y;
+    self.containerView.frame = CGRectMake(containerX, containerY, containerW, containerH);
+}
+
 - (void)setTitle:(NSString *)title {
     _title = title;
     self.titleLabel.text = title;
@@ -260,14 +268,15 @@ static CGFloat messageTitleH = 30.0;
     self.messageLabel.text = message;
 }
 
+
 - (void)setPreferredStyle:(LSAlertControllerStyle)preferredStyle {
     _preferredStyle = preferredStyle;
     if (_preferredStyle == LSAlertControllerStyleActionSheet) {
-        containerW = screenW;
+        self.containerW = screenW;
         containerH = 0.0;
         self.containerView.layer.cornerRadius = 0;
     } else {
-        containerW = 300.0;
+        self.containerW = 300.0;
         containerH = 160.0;
     }
 }

@@ -30,6 +30,7 @@
         NSLog(@"确认");
     }];
     [alertController addAction:okAction];
+    alertController.containerW = 400;
     [alertController show];
 }
 
@@ -54,7 +55,7 @@
         textField.placeholder = @"3333333333333";
     }];
     [alertController show];
-    
+    alertController.containerW = 400;
 }
 
 - (IBAction)AlertStyleWithVerticalButtons:(id)sender {
@@ -83,6 +84,7 @@
     [alertController addAction:otherThreeAction];
 
     [alertController show];
+    alertController.containerW = 400;
 }
 
 - (IBAction)AcitonSheet:(id)sender {
@@ -101,7 +103,7 @@
     [alertController addAction:Action];
     [alertController addAction:cancelAction];
     [alertController show];
-    
+    alertController.containerW = 400;
 }
 
 
@@ -121,6 +123,7 @@
     [alertController addAction:Action];
     [alertController addAction:cancelAction];
     [alertController show];
+    alertController.containerW = 400;
 }
 
 - (IBAction)AcitonSheetWithSubtitle:(id)sender {
@@ -138,6 +141,7 @@
     [alertController addAction:Action];
     [alertController addAction:cancelAction];
     [alertController show];
+    alertController.containerW = 400;
 }
 
 @end
