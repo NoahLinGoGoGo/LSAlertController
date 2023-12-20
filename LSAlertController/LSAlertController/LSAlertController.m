@@ -51,6 +51,7 @@ static CGFloat containerH = 160.0;
 @property(nonatomic, strong) UILabel *titleLabel;
 @property(nonatomic, strong) UILabel *messageLabel;
 
+@property(nonatomic, assign) BOOL isFirst;
 
 @end
 
@@ -97,15 +98,18 @@ static CGFloat containerH = 160.0;
 
 
 - (void)viewWillLayoutSubviews {
-    
-    if (self.preferredStyle == LSAlertControllerStyleActionSheet) {
-        [self setupActionSheetStyleSubViews];
-    } else {
-        [self setupAlertStyleSubViews];
+    if (!self.isFirst) {
+        if (self.preferredStyle == LSAlertControllerStyleActionSheet) {
+            [self setupActionSheetStyleSubViews];
+        } else {
+            [self setupAlertStyleSubViews];
+        }
     }
+
 }
 
 - (void)setupActionSheetStyleSubViews {
+    self.isFirst = YES;
     NSLog(@"%f",self.containerW);
     NSUInteger actionLength = self.actionItems.count;
     CGFloat buttonH = 50.0;
@@ -148,6 +152,7 @@ static CGFloat containerH = 160.0;
 
 
 - (void)setupAlertStyleSubViews {
+    self.isFirst = YES;
     NSUInteger actionLength = self.actionItems.count;
     NSUInteger textFieldLength = self.textFieldItems.count;
     CGFloat textFieldW = _containerW - margin * 2;
